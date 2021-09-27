@@ -66,42 +66,6 @@ var Comment = mongoose.model("comment", commentSchema);
 app.get("/", function (req, res) {
   res.send("hello world");
 });
-app.get("/contacts", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
-  User.find({}, function (err, contacts) {
-    if (err) return res.json(err);
-    res.render("contacts/index", { contacts: contacts });
-  });
-});
-app.get("/signin/:users.email", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
-  User.find({ _email: req.params.email }, function (err, users) {
-    if (err) return res.json(err);
-    if (_users.password == req.params.password) {
-      res.render("/", { users: users });
-    }
-  });
-});
-app.post("/", function (req, res) {
-  // contacts 액션으로 요청된 내용을 디비에 등록
-  User.create(req.body, function (err, user) {
-    if (err) return res.json(err);
-    res.redirect("/");
-  });
-});
-app.get("/novs", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
-  Nov.find({}, function (err, novs) {
-    if (err) return res.json(err);
-    res.render("novs/index", { novs: novs });
-  });
-});
-app.get("/comments", function (req, res) {
-  Comment.find({}, function (err, comments) {
-    if (err) return res.json(err);
-    res.render({ comments: comments });
-  });
-});
 
 // Contacts - New // 8
 
