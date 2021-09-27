@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact</title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+      
+    <div>Contact Novel</div>
+    <ul>
+        <li><a href="/details/<%=myName%>">Index</a></li>
+        <li><a href="/details/new/<%=myName%>">New</a></li>
+    </ul>
+
+    <div class="contact contact-index">
+      <h2>detailIndex</h2>
+      <%= myName %>
+      <ul>
+        <% details.forEach(function(detail) { %>
+          <li>
+            <a href="/details/<%=myName%>/<%= detail._id %>"><%= detail.name %></a> <!-- 1 -->
+            / <a href="/details/<%=myName%>/<%= detail._id%>"><%= detail.creator %></a> <!-- 1 -->
+          </li>
+        <% }) %>
+      </ul>
+      
+    </div>
+  </body>
+</html>

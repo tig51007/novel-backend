@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact</title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <div>Contact Novel</div>
+    <ul>
+      <li><a href="/contacts">Index</a></li>
+      <li><a href="/contacts/new">New</a></li>
+    </ul>
+
+    <div class="contact contact-edit">
+      <h2>Edit</h2>
+      <form class="contact-form" action="/contacts/<%= contact._id %>?_method=put" method="post">
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" value="<%= contact.name %>">
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="text" id="password" name="password" value="<%= contact.password %>">
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+  </body>
+</html>

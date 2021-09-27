@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact</title>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <div>Contact Book</div>
+    <ul>
+      <li><a href="/contacts">Index</a></li>
+      <li><a href="/contacts/new">New</a></li>
+    </ul>
+
+    <div class="contact contact-new">
+      <h2>New</h2>
+      <form class="contact-form" action="/contacts" method="post">
+        <div>
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" value="">
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="text" id="email" name="email" value="">
+        </div>
+        <div>
+          <label for="password">password</label>
+          <input type="text" id="password" name="password" value="">
+        </div>
+        <div>
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
