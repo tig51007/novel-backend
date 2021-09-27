@@ -64,7 +64,7 @@ var Nov = mongoose.model("nov", novSchema);
 var Comment = mongoose.model("comment", commentSchema);
 
 app.get("/", function (req, res) {
-  res.redirect("/contacts");
+  res.send("hello world");
 });
 app.get("/contacts", function (req, res) {
   //index페이지에 디비에 있는 내용을 뿌림
