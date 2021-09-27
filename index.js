@@ -7,7 +7,7 @@ var methodOverride = require("method-override");
 var mongo_db="mongodb+srv://tig51007:djawnsgma312!@cluster0.y4he2.mongodb.net/NOVELBACKEND?retryWrites=true&w=majority"
 // process.env.MONGO_DB
 // DB setting
-mongoose.connect(mongo_db); // 1
+/*mongoose.connect(mongo_db); // 1
 var db = mongoose.connection; //2
 
 //3
@@ -62,7 +62,7 @@ var commentSchema = mongoose.Schema({
 var User = mongoose.model("user", userSchema); // 5
 var Nov = mongoose.model("nov", novSchema);
 var Comment = mongoose.model("comment", commentSchema);
-
+*/
 app.get("/", function (req, res) {
   res.send("hello world");
 });
