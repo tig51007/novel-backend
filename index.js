@@ -4,10 +4,10 @@ var bodyParser = require("body-parser"); // 1
 var app = express();
 var cors = require("cors");
 var methodOverride = require("method-override");
-//var mongo_db="mongodb+srv://tig51007:djawnsgma312!@cluster0.y4he2.mongodb.net/NOVELBACKEND?retryWrites=true&w=majority"
+var mongo_db="mongodb+srv://tig51007:djawnsgma312!@cluster0.y4he2.mongodb.net/NOVELBACKEND?retryWrites=true&w=majority"
 // process.env.MONGO_DB
 // DB setting
-mongoose.connect(process.env.MONGO_DB); // 1
+mongoose.connect(mongo_db); // 1
 var db = mongoose.connection; //2
 
 //3
