@@ -25,7 +25,7 @@ app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json()); // 2
 app.use(bodyParser.urlencoded({ extended: true })); // 3
 app.use(cors());
-app.use(methodOverride("_method")); // 2
+//app.use(methodOverride("_method")); // 2
 
 // Port setting //특수문자 라면 ERROR 메세지 Front end 로
 var userSchema = mongoose.Schema({
