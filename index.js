@@ -59,126 +59,48 @@ var commentSchema = mongoose.Schema({
   disLike: { tpye: Number },
 });
 
-var User = mongoose.model("contact", userSchema); // 5
-var Detail = mongoose.model("detail", novSchema);
+var User = mongoose.model("user", userSchema); // 5
+var Nov = mongoose.model("nov", novSchema);
 var Comment = mongoose.model("comment", commentSchema);
 
 app.get("/", function (req, res) {
   res.redirect("/contacts");
 });
 app.get("/contacts", function (req, res) {
+  res.redirect("/contacts/index");
+});
+app.get("/signin/:users.email", function (req, res) {
   //index페이지에 디비에 있는 내용을 뿌림
-  User.find({}, function (err, contacts) {
+  User.find({_email:req.params.email}, function (err, users) {
     if (err) return res.json(err);
-    res.render("contacts/index", { contacts: contacts });
+    if (_users.password==req.params.password){
+      res.render("/", { users: users });
+    }
   });
 });
-app.get("/details", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
-  Detail.find({}, function (err, details) {
+app.post("/", function (req, res) {
+  // contacts 액션으로 요청된 내용을 디비에 등록
+  User.create(req.body, function (err, user) {
     if (err) return res.json(err);
-    res.render("details/index", { details: details, myName: req.params.name });
+    res.redirect("/");
   });
 });
+app.get("/novs", function (req, res) {
+  //index페이지에 디비에 있는 내용을 뿌림
+  Nov.find({}, function (err, novs) {
+    if (err) return res.json(err);
+    res.render("novs/index", { novs: novs});
+  });
+});
+app.get("/comments", function(req,res) {
+  Comment.find({}, function(err,comments){
+    if (err) return res.json(err);
+    res.render({comments:comments});
+  })
+})
 
 // Contacts - New // 8
-app.get("/contacts/new", function (req, res) {
-  //new를 new에 보여줌 걍
-  res.render("contacts/new");
-});
-app.get("/details/new/:myName", function (req, res) {
-  //new를 new에 보여줌 걍
-  res.render(
-    "details/new",
-    { myName: req.params.myName },
-    console.log(req.params.myName)
-  );
-});
-app.get("/details/text", function (req, res) {
-  //new를 new에 보여줌 걍
-  res.render("details/text");
-});
 
-app.get("/details/:myName/:detail._id", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
-  Detail.findOne({ _id: req.params.id }, function (err, detail) {
-    // 조건에 맞는걸 발견
-    if (err) return res.json(err);
-    res.render("detail/text", { detail: detail });
-  });
-});
-
-// Contacts - create // 9
-app.post("/contacts", function (req, res) {
-  // contacts 액션으로 요청된 내용을 디비에 등록
-  User.create(req.body, function (err, contact) {
-    if (err) return res.json(err);
-    res.redirect("/contacts");
-  });
-});
-
-app.get("/contacts/:name", function (req, res) {
-  User.findOne({ _name: req.params.name }, function (err, contact) {
-    // 조건에 맞는걸 발견
-    if (err) return res.json(err);
-    res.render("contacts/show", { contact: contact });
-    console.log(contact);
-  });
-});
-app.post("/details", function (req, res) {
-  Detail.create(req.body, function (err, detail) {
-    if (err) return res.json(err);
-    res.redirect("/details");
-  });
-});
-app.get("/detail", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
-  Detail.find({}, function (err, details) {
-    if (err) return res.json(err);
-    res.render("details/index", { details: details });
-  });
-});
-app.get("/details/:name", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
-  Detail.find({}, function (err, details) {
-    if (err) return res.json(err);
-    res.render("details/index", { details: details, myName: req.params.name });
-  });
-});
-
-// Contacts - edit // 4
-app.get("/contacts/:id/edit", function (req, res) {
-  User.findOne({ _id: req.params.id }, function (err, contact) {
-    //조건에 맞는걸 편집
-    if (err) return res.json(err);
-    res.render("contacts/edit", { contact: contact });
-  });
-});
-// Contacts - update // 5
-app.put("/contacts/:id", function (req, res) {
-  User.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    function (err, contact) {
-      //조건에 맞는 id를 업뎃
-      if (err) return res.json(err);
-      res.redirect("/contacts/" + req.params.id);
-    }
-  );
-});
-// Contacts - destroy // 6
-app.delete("/contacts/:id", function (req, res) {
-  User.deleteOne({ _id: req.params.id }, function (err) {
-    if (err) return res.json(err);
-    res.redirect("/contacts");
-  });
-});
-app.get("/test", (req, res) => {
-  User.find({}, function (err, contacts) {
-    if (err) return res.json(err);
-    res.json(contacts);
-  });
-});
 var port = 3000;
 app.listen(port, function () {
   console.log("server on! http://localhost:" + port);
