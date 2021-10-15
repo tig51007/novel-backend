@@ -8,6 +8,7 @@ var mongo_db =
   "mongodb+srv://tig51007:djawnsgma312!@cluster0.y4he2.mongodb.net/NOVELBACKEND?retryWrites=true&w=majority";
 // process.env.MONGO_DB
 // DB setting
+
 mongoose.connect(mongo_db); // 1
 var db = mongoose.connection; //2
 var dic={
@@ -71,95 +72,156 @@ var commentSchema = mongoose.Schema({
   like: { type: Number },
   disLike: { tpye: Number },
 });
+var novelList = mongoose.Schema({
+  title:{type:String},
+  list:{type:Array},
+  create_by:{type:Number},
+  count:{type:Number},
+
+
+});
 
 var User = mongoose.model("user", userSchema); // 5
 var Nov = mongoose.model("nov", novSchema);
 var Comment = mongoose.model("comment", commentSchema);
-
+var List = mongoose.model("list", novelList);
 app.get("/", function (req, res) {
   res.send("hello world");
 });
-app.get("/signIn", function (req, res) {
+app.get("/list",function(req,res){
   const {
-    query: { email, password },
+    query: { title },
   } = req.header;
-  var passwords=password.split('')
-  var dicPasswords=[];
-  for (const key in passwords){
-    dicPasswords[key]=dic[passwords[key]]; 
-  }
-  var dicPassword=dicPasswords.join('');
-  
-  //index페이지에 디비에 있는 내용을 뿌림
-  User.findOne({ email }, (err, result) => {
+  List.findOne({title},(err,result)=>{
     try {
-      const { password: awerPassword, google } = result;
-      if (google) {
-        res.send("google login");
-      }
-      if (dicPassword === awerPassword) {
-        res.send("일치 합니다.");
-      } else {
-        res.send("일치하지 않습니다.");
-      }
+      const {title,list,createBy,count}= result
+     res.json({
+       title:title,
+       list:list,
+       createBy:createBy,
+       count:count
+     })
     } catch {
-      res.send("email not found");
+      res.send("title not found");
     }
   });
+  });
+  app.get("/signIn", function (req, res) {
+    const {
+      query: { email, password },
+    } = req.header;
+    var passwords=password.split('')
+    var dicPasswords=[];
+    for (const key in passwords){
+      dicPasswords[key]=dic[passwords[key]]; 
+    }
+    var dicPassword=dicPasswords.join('');
+    
+    //index페이지에 디비에 있는 내용을 뿌림
+    User.findOne({ email }, (err, result) => {
+      try {
+        const { password: awerPassword, google ,email, name, profile, _id } = result;
+        if (google) {
+          res.send("google login");
+        }
+        if (dicPassword === awerPassword) {
+          res.status(200).json({
+            _id : _id,
+            isAuth : true,
+            email : email,
+            name : name,
+            profile: profile
+        })
+        } else {
+          res.send("일치하지 않습니다.");
+        }
+      }catch {
+        res.send("email not found");
+      }
+  });
 });
-// a b c d 4 3 2 1 a-4 d-1=> c
-// j s e q 
 
-/*
-var word = "djawnsgma312!";
-var words = word.split('')
-var dicWords=[];
-for (const key in words){
-dicWords[key]=dic[words[key]]; 
-}
-var dicWord=dicWords.join('');
-console.log(dicWord)
-*/
-// words = word.splite('') 사전[word] result === password
-app.get("/signUp", function (req, res) {
-  //index페이지에 디비에 있는 내용을 뿌림
   
-  const {
-    query: { name , email, password, profile, logined, createBy, google },
-  }=req.header;
-  var passwords=password.split('')
-  var dicPasswords=[];
-  for (const key in passwords){
-    dicPasswords[key]=dic[passwords[key]]; 
+  // a b c d 4 3 2 1 a-4 d-1=> c
+  // j s e q 
+  
+  /*
+  var word = "djawnsgma312!";
+  var words = word.split('')
+  var dicWords=[];
+  for (const key in words){
+  dicWords[key]=dic[words[key]]; 
   }
-  var dicPassword=dicPasswords.join('');
-  
-  User.create(name,email,dicPassword,profile,logined,createBy,google, function (err, contact) {
-    if (err) return res.json(err);
-    res.send("등록성공");
-  });
-});
-app.put("/userEdit/:id", function (req, res) {
-  User.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    function (err, contact) {
-      //조건에 맞는 id를 업뎃
-      if (err) return res.json(err);
-     res.send("변경완료");
+  var dicWord=dicWords.join('');
+  console.log(dicWord)
+  */
+  // words = word.splite('') 사전[word] result === password
+  app.get("/signUp", function (req, res) {
+    //index페이지에 디비에 있는 내용을 뿌림
+    
+    const {
+      query: { name , email, password, profile, logined, createBy, google },
+    }=req.header;
+    var passwords=password.split('')
+    var dicPasswords=[];
+    for (const key in passwords){
+      dicPasswords[key]=dic[passwords[key]]; 
     }
-  );
-});
-// Contacts - destroy // 6
-app.delete("/userDel/:id", function (req, res) {
-  User.deleteOne({ _id: req.params.id }, function (err) {
-    if (err) return res.json(err);
-    res.send("계정 삭제");
+    var dicPassword=dicPasswords.join('');
+    
+    User.create(name,email,dicPassword,profile,logined,createBy,google, function (err, contact) {
+      if (err) return res.json(err);
+      res.send("등록성공");
+    });
   });
-});
-// Contacts - New // 8
-
-var port = 3000;
-app.listen(port, function () {
-  console.log("server on! http://localhost:" + port);
-});
+  app.get("/list_up",function(req,res){
+    const {
+      query: { title,create_by }
+    } = req.header;
+    const count=0;
+    const list=[];
+    
+  List.create(title,list,create_by,count,function(err,text){
+    if(err) return res.json(err);
+    res.send("리스트 생성")
+  })
+  });
+  app.put("/list_up_edit", function (req, res) {
+    const {
+      query: { title,id }
+    } = req.header;
+    //const list[]
+    //list[0],id;
+    List.findOneAndUpdate(
+      { title: title },
+      list,
+      function (err, contact) {
+        //조건에 맞는 id를 업뎃
+        if (err) return res.json(err);
+       res.send("변경완료");
+      }
+    );
+  });
+  app.put("/userEdit/:id", function (req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.id },
+      req.body,
+      function (err, contact) {
+        //조건에 맞는 id를 업뎃
+        if (err) return res.json(err);
+       res.send("변경완료");
+      }
+    );
+  });
+  // Contacts - destroy // 6
+  app.delete("/userDel/:id", function (req, res) {
+    User.deleteOne({ _id: req.params.id }, function (err) {
+      if (err) return res.json(err);
+      res.send("계정 삭제");
+    });
+  });
+  // Contacts - New // 8
+  var port = 3000;
+  app.listen(port, function () {
+    console.log("server on! http://localhost:" + port);
+  });
