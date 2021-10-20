@@ -95,12 +95,12 @@ app.get("/list",function(req,res){
   List.findOne({title},(err,result)=>{
     try {
       const {title,list,createBy,count}= result
-     res.json({
+     res.send(JSON.stringify({
        title:title,
        list:list,
        createBy:createBy,
        count:count
-     })
+     }))
     } catch {
       res.send("title not found");
     }
@@ -125,13 +125,13 @@ app.get("/list",function(req,res){
           res.send("google login");
         }
         if (dicPassword === awerPassword) {
-          res.status(200).json({
+          res.status(200).send(JSON.stringify({
             _id : _id,
             isAuth : true,
             email : email,
             name : name,
             profile: profile
-        })
+        }))
         } else {
           res.send("일치하지 않습니다.");
         }
@@ -188,13 +188,13 @@ app.get("/list",function(req,res){
   });
   app.put("/list_up_edit", function (req, res) {
     const {
-      query: { title,id }
+      query: { title,list }
     } = req.header;
     //const list[]
     //list[0],id;
     List.findOneAndUpdate(
       { title: title },
-      list,
+      {list: list},
       function (err, contact) {
         //조건에 맞는 id를 업뎃
         if (err) return res.json(err);
