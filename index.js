@@ -106,7 +106,7 @@ app.get("/list",function(req,res){
     }
   });
   });
-  app.get("/signIn", function (req, res) {
+  app.get("/sign_in", function (req, res) {
     const {
       query: { email, password },
     } = req.header;
@@ -156,7 +156,7 @@ app.get("/list",function(req,res){
   console.log(dicWord)
   */
   // words = word.splite('') 사전[word] result === password
-  app.get("/signUp", function (req, res) {
+  app.get("/sign_up", function (req, res) {
     //index페이지에 디비에 있는 내용을 뿌림
     
     const {
@@ -202,7 +202,7 @@ app.get("/list",function(req,res){
       }
     );
   });
-  app.put("/userEdit/:id", function (req, res) {
+  app.put("/user_edit/:id", function (req, res) {
     User.findOneAndUpdate(
       { _id: req.params.id },
       req.body,
@@ -214,7 +214,13 @@ app.get("/list",function(req,res){
     );
   });
   // Contacts - destroy // 6
-  app.delete("/userDel/:id", function (req, res) {
+  app.delete("/list_del/:id",function(req,res){
+    List.deleteOne({_id:req.params.id }, function (err) {
+      if (err) return res.json(err);
+      res.send("리스트 삭제");
+    });
+  });
+  app.delete("/user_del/:id", function (req, res) {
     User.deleteOne({ _id: req.params.id }, function (err) {
       if (err) return res.json(err);
       res.send("계정 삭제");
